@@ -1,6 +1,7 @@
 const int buttonPin = 7;
 const int trigPin = 9;
 const int echoPin = 10;
+const int LED = 6;
 
 int buttonPushCounter = 0;
 int buttonState = 0;
@@ -13,6 +14,7 @@ void setup() {
   pinMode(buttonPin, INPUT);
   pinMode(trigPin, OUTPUT);  
 	pinMode(echoPin, INPUT);
+  pinMode(LED, OUTPUT);
   Serial.begin(9600);
 }
 
@@ -41,6 +43,13 @@ void loop() {
     Serial.print("Distance: ");
     Serial.println(distance);
     delay(100);
+
+      if (distance < 20) {
+          digitalWrite(LED, HIGH);
+        }
+      else {
+          digitalWrite(LED, LOW);
+        }
     
   } else {
     
