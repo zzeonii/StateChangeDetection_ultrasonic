@@ -1,13 +1,18 @@
 const int buttonPin = 7;
-const int ledPin = 13;
+const int trigPin = 9;
+const int echoPin = 10;
 
 int buttonPushCounter = 0;
 int buttonState = 0;
 int lastButtonState = 0;
 
+float duration, distance;
+
+
 void setup() {
   pinMode(buttonPin, INPUT);
-  pinMode(ledPin, OUTPUT);
+  pinMode(trigPin, OUTPUT);  
+	pinMode(echoPin, INPUT);
   Serial.begin(9600);
 }
 
@@ -17,11 +22,7 @@ void loop() {
   if (buttonState != lastButtonState) {
     if (buttonState == HIGH) {
       buttonPushCounter++;
-      Serial.println("on");
-      Serial.print("number of button pushes: ");
-      Serial.println(buttonPushCounter);
     } else {
-      Serial.println("off");
     }
     delay(50);
   }
@@ -29,8 +30,19 @@ void loop() {
   lastButtonState = buttonState;
   
   if (buttonPushCounter % 4 == 0) {
-    digitalWrite(ledPin, HIGH);
+    digitalWrite(trigPin, LOW);  
+    delayMicroseconds(2);  
+    digitalWrite(trigPin, HIGH);  
+    delayMicroseconds(10);  
+    digitalWrite(trigPin, LOW); 
+
+    duration = pulseIn(echoPin, HIGH);
+    distance = (duration*.0343)/2;
+    Serial.print("Distance: ");
+    Serial.println(distance);
+    delay(100);
+    
   } else {
-    digitalWrite(ledPin, LOW);
+    
   }
 }
